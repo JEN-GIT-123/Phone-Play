@@ -1,67 +1,112 @@
-import { useCart } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
-
-const products = [
-  { id: 1, name: "iPhone 15 Pro", price: "$999", image: "https://via.placeholder.com/300x400?text=iPhone+15+Pro" },
-  { id: 2, name: "Samsung Galaxy S25", price: "$899", image: "https://via.placeholder.com/300x400?text=Galaxy+S25" },
-  { id: 3, name: "Google Pixel 9", price: "$799", image: "https://via.placeholder.com/300x400?text=Pixel+9" },
-  { id: 4, name: "OnePlus 12", price: "$699", image: "https://via.placeholder.com/300x400?text=OnePlus+12" },
-];
+import { Link } from "react-router-dom";
 
 export default function Home() {
-  const { addToCart } = useCart();
-  const navigate = useNavigate();
-
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="bg-black text-white">
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-b from-black via-blue-900 to-black text-center py-20 relative overflow-hidden">
-        <h1 className="text-5xl font-[Orbitron] font-extrabold tracking-widest text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.7)] mb-4">
-          Level Up Your Phone Game
+      {/* HERO SECTION */}
+      <section className="min-h-[90vh] flex flex-col justify-center items-center text-center px-6 bg-gradient-to-b from-black via-gray-900 to-black">
+        <h1 className="text-4xl md:text-6xl font-extrabold">
+          Buy <span className="text-cyan-400">Free Fire</span> Accounts
         </h1>
-        <p className="text-lg text-gray-300 mb-8">Discover top smartphones with glowing deals. Play your way to the best tech!</p>
-        <button
-          onClick={() => window.scrollTo({ top: 600, behavior: "smooth" })}
-          className="px-8 py-3 bg-cyan-400/20 text-white font-bold rounded-lg hover:bg-cyan-400/40 hover:shadow-[0_0_20px_rgba(34,211,238,0.8)] transition-all duration-300"
-        >
-          Shop Now
-        </button>
 
-        {/* Neon floating lines */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <div className="absolute w-1 h-full bg-cyan-400/20 left-1 animate-pulse-slow"></div>
-          <div className="absolute w-1 h-full bg-cyan-400/20 left-10 animate-pulse-slow"></div>
-          <div className="absolute w-1 h-full bg-cyan-400/20 left-20 animate-pulse-slow"></div>
+        <p className="mt-4 text-gray-400 max-w-xl">
+          Safe • Instant Delivery • Best Prices • 100% Trusted Platform
+        </p>
+
+        <div className="mt-8 flex gap-4">
+          <Link
+            to="/shop"
+            className="px-8 py-3 bg-cyan-400 text-black font-bold rounded-lg hover:scale-105 transition"
+          >
+            Buy Now
+          </Link>
+          <Link
+            to="/how-it-works"
+            className="px-8 py-3 border border-cyan-400 text-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition"
+          >
+            How It Works
+          </Link>
         </div>
       </section>
 
-      {/* Products Grid */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-[Orbitron] font-bold mb-10 text-center text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.7)]">
-          Featured Phones
+      {/* FEATURES */}
+      <section className="py-16 max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+        {[
+          { title: "Instant Delivery", desc: "Get account details instantly after payment." },
+          { title: "Secure Payments", desc: "100% safe & trusted transactions." },
+          { title: "Best Prices", desc: "Cheap Free Fire accounts with rare skins." }
+        ].map((item, i) => (
+          <div
+            key={i}
+            className="bg-black/60 border border-cyan-400/30 p-6 rounded-xl hover:shadow-[0_0_20px_#22d3ee] transition"
+          >
+            <h3 className="text-xl font-bold text-cyan-400">{item.title}</h3>
+            <p className="text-gray-400 mt-2">{item.desc}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* FEATURED ACCOUNTS */}
+      <section className="py-16 bg-gradient-to-b from-black to-gray-900">
+        <h2 className="text-center text-3xl font-bold mb-10">
+          🔥 Featured Accounts
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-6 px-6">
+          {[1, 2, 3].map((item) => (
             <div
-              key={product.id}
-              className="bg-black/70 border border-cyan-400/20 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.7)] transition-all duration-300"
+              key={item}
+              className="bg-black/70 border border-cyan-400/20 rounded-xl p-4 hover:shadow-[0_0_20px_#22d3ee] transition"
             >
-              <img src={product.image} alt={product.name} className="w-full h-64 object-cover border-b border-cyan-400/30" />
-              <div className="p-6 text-center">
-                <h3 className="font-[Orbitron] text-lg font-bold text-cyan-400 mb-2">{product.name}</h3>
-                <p className="text-gray-300 mb-4">{product.price}</p>
-                <button
-                  onClick={() => addToCart(product)}
-                  className="px-4 py-2 bg-cyan-400/20 rounded-lg hover:bg-cyan-400/40 hover:shadow-[0_0_15px_rgba(34,211,238,0.7)] transition-all duration-300 font-semibold"
+              <img
+                src="https://i.imgur.com/Y6XzK6R.png"
+                alt="Account"
+                className="rounded-lg mb-3"
+              />
+              <h3 className="font-bold">Free Fire Account</h3>
+              <p className="text-gray-400 text-sm">Level 65 • Rare Skins</p>
+
+              <div className="flex justify-between items-center mt-3">
+                <span className="text-cyan-400 font-bold">₹799</span>
+                <Link
+                  to="/shop"
+                  className="bg-cyan-400 text-black px-4 py-1 rounded"
                 >
-                  Add to Cart
-                </button>
+                  Buy
+                </Link>
               </div>
             </div>
           ))}
         </div>
+      </section>
+
+      {/* WHY CHOOSE US */}
+      <section className="py-16 text-center">
+        <h2 className="text-3xl font-bold mb-6">Why Choose Us?</h2>
+        <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6 px-6">
+          <div className="p-6 border border-cyan-400/30 rounded-lg">
+            ✅ 100% Safe
+          </div>
+          <div className="p-6 border border-cyan-400/30 rounded-lg">
+            ⚡ Instant Delivery
+          </div>
+          <div className="p-6 border border-cyan-400/30 rounded-lg">
+            💬 24/7 Support
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-cyan-400 text-black text-center">
+        <h2 className="text-3xl font-bold">Ready to Buy Your Account?</h2>
+        <p className="mt-2">Get started now and enjoy gaming!</p>
+        <Link
+          to="/shop"
+          className="inline-block mt-6 px-8 py-3 bg-black text-white rounded-lg hover:scale-105 transition"
+        >
+          Browse Accounts
+        </Link>
       </section>
     </div>
   );

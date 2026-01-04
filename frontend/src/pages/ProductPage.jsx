@@ -1,96 +1,201 @@
-import React, { useMemo, useState, useEffect } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  FaGamepad,
+  FaMicrochip,
+  FaBatteryFull,
+  FaCamera,
+  FaShoppingCart,
+  FaCheck,
+} from "react-icons/fa";
 import { useCart } from "../context/CartContext";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const PRODUCTS = [
-  { id: 1, name: "iPhone 14 Pro", brand: "Apple", ram: "8GB", storage: "256GB", price: 999, image: "https://via.placeholder.com/400x300?text=iPhone+14+Pro" },
-  { id: 2, name: "Samsung S23", brand: "Samsung", ram: "8GB", storage: "128GB", price: 799, image: "https://via.placeholder.com/400x300?text=Samsung+S23" },
-  { id: 3, name: "Xiaomi 13", brand: "Xiaomi", ram: "12GB", storage: "256GB", price: 599, image: "https://via.placeholder.com/400x300?text=Xiaomi+13" },
-  { id: 4, name: "Oppo Reno10", brand: "Oppo", ram: "8GB", storage: "128GB", price: 399, image: "https://via.placeholder.com/400x300?text=Oppo+Reno10" },
-];
-
-export default function HomePage() {
+export default function Products() {
+  const [filter, setFilter] = useState("all");
   const { addToCart } = useCart();
-  const [search, setSearch] = useState("");
-  const [favorites, setFavorites] = useState([]);
+  const [addedId, setAddedId] = useState(null);
 
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(stored);
-  }, []);
+  const products = [
+    {
+      id: 1,
+      name: "Cyber Phone X",
+      price: 899,
+      category: "gaming",
+      image: "/phones/phone1.png",
+      stats: {
+        fps: "144 FPS",
+        chip: "Snapdragon 8 Gen",
+        battery: "6000mAh",
+        camera: "64MP",
+      },
+    },
+    {
+      id: 2,
+      name: "Neon Phone Pro",
+      price: 799,
+      category: "flagship",
+      image: "/phones/phone2.png",
+      stats: {
+        fps: "120 FPS",
+        chip: "Dimensity 9200",
+        battery: "5000mAh",
+        camera: "108MP",
+      },
+    },
+    {
+      id: 3,
+      name: "PowerMax Ultra",
+      price: 699,
+      category: "battery",
+      image: "/phones/phone3.png",
+      stats: {
+        fps: "90 FPS",
+        chip: "Snapdragon 7+",
+        battery: "7000mAh",
+        camera: "50MP",
+      },
+    },
+    {
+      id: 4,
+      name: "CamX Shooter",
+      price: 749,
+      category: "camera",
+      image: "/phones/phone4.png",
+      stats: {
+        fps: "120 FPS",
+        chip: "Snapdragon 8",
+        battery: "4800mAh",
+        camera: "200MP",
+      },
+    },
+  ];
 
-  const toggleFavorite = (id) => {
-    let updated;
-    if (favorites.includes(id)) {
-      updated = favorites.filter(fav => fav !== id);
-    } else {
-      updated = [...favorites, id];
-    }
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
+  const filteredProducts =
+    filter === "all"
+      ? products
+      : products.filter((p) => p.category === filter);
+
+  const handleAddToCart = (product) => {
+    addToCart({ ...product, qty: 1 });
+    setAddedId(product.id);
+
+    // Reset animation after 1 second
+    setTimeout(() => setAddedId(null), 1000);
   };
 
-  const filtered = PRODUCTS.filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()));
-
   return (
-    <div className="bg-black min-h-screen text-white font-[Orbitron] py-8">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white px-6">
 
-        {/* Header + Search */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.8)]">
-            Neon Phones
-          </h1>
-          <input
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search phones, model..."
-            className="w-full md:max-w-md px-4 py-2 border border-cyan-400/50 rounded-xl bg-black/70 text-white focus:ring-2 focus:ring-cyan-400 focus:outline-none transition"
-          />
-        </div>
+      {/* ===== HEADER ===== */}
+      <section className="pt-32 pb-10 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-widest font-[Orbitron]">
+          🎒 PLAYER INVENTORY
+        </h1>
+        <p className="mt-4 text-gray-400">
+          Choose your weapon before entering battle
+        </p>
+      </section>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(product => (
-            <div key={product.id} className="relative bg-black/70 border border-cyan-400/30 rounded-2xl shadow-[0_0_35px_rgba(34,211,238,0.5)]
-                hover:shadow-[0_0_50px_rgba(34,211,238,1)] hover:scale-105 transform transition-all duration-300 flex flex-col overflow-hidden">
-              
-              {/* Favorite Icon */}
-              <button
-                onClick={() => toggleFavorite(product.id)}
-                className="absolute top-3 right-3 text-xl z-10"
-              >
-                {favorites.includes(product.id) ? (
-                  <FaHeart className="text-pink-500 drop-shadow-[0_0_15px_rgba(255,0,128,0.8)] transition-transform hover:scale-125" />
-                ) : (
-                  <FaRegHeart className="text-gray-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-transform hover:scale-125" />
-                )}
-              </button>
+      {/* ===== FILTER BAR ===== */}
+      <section className="flex flex-wrap justify-center gap-4 mb-14">
+        {["all", "gaming", "flagship", "battery", "camera"].map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setFilter(cat)}
+            className={`px-6 py-2 rounded-full text-sm font-bold uppercase
+            transition
+            ${
+              filter === cat
+                ? "bg-cyan-400 text-black shadow-[0_0_20px_rgba(34,211,238,0.8)]"
+                : "bg-black/50 border border-white/20 hover:bg-white/10"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </section>
 
-              <div className="w-full h-56 overflow-hidden rounded-t-2xl border-b border-cyan-400/20">
-                <img src={product.image} alt={product.name} className="w-full h-full object-cover transform hover:scale-110 transition duration-500" />
-              </div>
+      {/* ===== PRODUCT GRID ===== */}
+      <section className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8 pb-24">
 
-              <div className="flex-1 p-4 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-bold text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">{product.name}</h3>
-                  <p className="text-gray-300 mt-1">{product.brand} • {product.ram} • {product.storage}</p>
-                </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="text-lg font-bold text-cyan-400">${product.price}</div>
-                  <button
-                    onClick={() => addToCart(product)}
-                    className="px-4 py-2 bg-cyan-400/20 rounded-lg hover:bg-cyan-400/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.8)] transition font-semibold"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
+        {filteredProducts.map((product) => (
+          <div
+            key={product.id}
+            className="group bg-black/60 border border-cyan-400/20 rounded-2xl p-6
+            hover:shadow-[0_0_40px_rgba(34,211,238,0.35)]
+            transition relative overflow-hidden"
+          >
+            {/* Glow */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-400/20 rounded-full blur-2xl"></div>
 
+            {/* Image */}
+            <div className="h-40 rounded-xl bg-black/40 flex items-center justify-center mb-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-full object-contain"
+              />
             </div>
-          ))}
-        </div>
-      </div>
+
+            {/* Name & Price */}
+            <h3 className="text-xl font-bold">{product.name}</h3>
+            <p className="text-cyan-400 font-bold mt-1">${product.price}</p>
+
+            {/* STATS */}
+            <div className="mt-4 space-y-2 text-sm text-gray-300">
+              <div className="flex items-center gap-2">
+                <FaGamepad className="text-cyan-400" />
+                FPS: {product.stats.fps}
+              </div>
+              <div className="flex items-center gap-2">
+                <FaMicrochip className="text-pink-400" />
+                Chip: {product.stats.chip}
+              </div>
+              <div className="flex items-center gap-2">
+                <FaBatteryFull className="text-green-400" />
+                Battery: {product.stats.battery}
+              </div>
+              <div className="flex items-center gap-2">
+                <FaCamera className="text-purple-400" />
+                Camera: {product.stats.camera}
+              </div>
+            </div>
+
+            {/* ACTION BUTTONS */}
+            <div className="flex gap-3 mt-6">
+              <Link
+                to={`/products/${product.id}`}
+                className="flex-1 text-center py-2 rounded-lg border border-white/20
+                hover:bg-white/10 transition"
+              >
+                View Stats
+              </Link>
+
+              <button
+                onClick={() => handleAddToCart(product)}
+                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+                font-bold transition
+                ${
+                  addedId === product.id
+                    ? "bg-green-400 text-black"
+                    : "bg-cyan-400 text-black hover:scale-105 active:scale-95"
+                }`}
+              >
+                {addedId === product.id ? <FaCheck /> : <FaShoppingCart />}
+              </button>
+            </div>
+          </div>
+        ))}
+
+      </section>
+
+      {/* ===== GAME TIP ===== */}
+      <section className="text-center pb-20">
+        <p className="text-gray-500 text-sm">
+          🎯 Tip: Items added to inventory appear in your cart HUD
+        </p>
+      </section>
+
     </div>
   );
 }
